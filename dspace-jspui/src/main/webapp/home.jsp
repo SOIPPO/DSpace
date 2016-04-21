@@ -61,7 +61,7 @@
 
 <dspace:layout locbar="nolink" titlekey="jsp.home.title" feedData="<%= feedData %>">
     <div class="row">
-        <div class="jumbotron col-md-8">
+        <div class="jumbotron">
             <%= topNews %>
         </div>
 
@@ -150,23 +150,41 @@
                 }
             %>
 
-            <div class="col-md-4">
-                <%= sideNews %>
-            </div>
+
         </div>
     </div>
-    <div class="container row">
+    <div class="row jumbotron">
+        <p><fmt:message key="jsp.home.type"/></p>
+        <table class="table">
+            <tr>
+                <%
+                    List<String> types = reader.getPairs("common_types");
+                    int printed = 0;
+                    for (int i = 1; i < types.size(); i += 2) {
+                        String link = String.format("<a href = \"%s/simple-search?query=&filtername=type&filtertype=equals&filterquery=%s&rpp=20&sort_by=dc.date.issued_dt&order=desc\">%s</a>", request.getContextPath(), types.get(i), types.get(i - 1));
+                        out.println(String.format("<td><h4>%s</h4></td>", link));
+                        printed++;
+                        if( printed % 3 == 0) {
+                            out.println("</tr><tr>");
+                        }
+                    }
+                %>
+            </tr>
+        </table>
+    </div>
+
+    <div class="container row jumbotron">
         <%
             if (communities != null && communities.length != 0) {
         %>
-        <div class="col-md-4">
-
+        <div>
+            <p><fmt:message key="jsp.home.com2"/></p>
             <div class="list-group">
                 <%
                     boolean showLogos = ConfigurationManager.getBooleanProperty("jspui.home-page.logos", true);
                     for (int i = 0; i < communities.length; i++) {
                 %>
-                <div class="list-group-item row">
+                <div class="list-group-item row" style = "background-color: #eee;">
                     <%
                         Bitstream logo = communities[i].getLogo();
                         if (showLogos && logo != null) { %>
@@ -198,30 +216,13 @@
                         }
                     %>
                 </div>
-                <p><fmt:message key="jsp.home.com2"/></p>
+
             </div>
 
             <%
                 }
             %>
-            <div class="col-md-8">
-                <table class="table table-bordered col-md-8">
-                    <tr>
-                <%
-                    List<String> types = reader.getPairs("common_types");
-                    int printed = 0;
-                    for (int i = 1; i < types.size(); i += 2) {
-                        String link = String.format("<a href = \"%s/simple-search?query=&filtername=type&filtertype=equals&filterquery=%s&rpp=20&sort_by=dc.date.issued_dt&order=desc\">%s</a>", request.getContextPath(), types.get(i), types.get(i - 1));
-                        out.println(String.format("<td><h4>%s</h4></td>", link));
-                        printed++;
-                        if( printed % 3 == 0) {
-                            out.println("</tr><tr>");
-                        }
-                    }
-                %>
-                    </tr>
-                </table>
-            </div>
+
             <%
                 int discovery_panel_cols = 8;
                 int discovery_facet_cols = 4;
