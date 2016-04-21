@@ -23,9 +23,9 @@
   --%>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
-  
+
 <%@ page import="java.util.List" %>
-<ol class="breadcrumb btn-success">
+<ol class="breadcrumb" style = "background-color: midnightblue;">
 <%
     List parentTitles = (List) request.getAttribute("dspace.layout.parenttitles");
     List parentLinks = (List) request.getAttribute("dspace.layout.parentlinks");
@@ -41,12 +41,12 @@
             {
 %>
 <li class="active"><%= s %></li>
-<%           
+<%
             }
             else
             {
 %>
-<li><%= s %></li>
+<li style = "color: yellow;"><%= s %></li>
 <%			}
         }
         else
