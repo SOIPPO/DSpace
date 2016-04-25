@@ -7,11 +7,15 @@
  */
 package org.dspace.app.webui.servlet;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import org.dspace.app.webui.util.JSPManager;
+import org.dspace.authorize.AuthorizeException;
+import org.dspace.core.ConfigurationManager;
+import org.dspace.core.Context;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,17 +26,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.dspace.app.webui.util.JSPManager;
-import org.dspace.authorize.AuthorizeException;
-import org.dspace.core.ConfigurationManager;
-import org.dspace.core.Context;
-import org.dspace.eperson.Group;
-
-/** 
+/**
  * This servlet provides an interface to the statistics reporting for a DSpace
  * repository
  *
@@ -41,38 +35,28 @@ import org.dspace.eperson.Group;
  */
 public class StatisticsServlet extends org.dspace.app.webui.servlet.DSpaceServlet
 {
-    protected void doDSGet(Context c, 
+    protected void doDSGet(Context c,
         HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException, SQLException, AuthorizeException
     {
         // forward all requests to the post handler
         doDSPost(c, request, response);
     }
-    
-    protected void doDSPost(Context c, 
+
+    protected void doDSPost(Context c,
         HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException, SQLException, AuthorizeException
     {
         // check to see if the statistics are restricted to administrators
         boolean publicise = ConfigurationManager.getBooleanProperty("report.public");
-        
+
         // determine the navigation bar to be displayed
         String navbar = (!publicise ? "admin" : "default");
         request.setAttribute("navbar", navbar);
-        
-        // is the user a member of the Administrator (1) group
-        boolean admin = Group.isMember(c, 1);
-        
-        if (publicise || admin)
-        {
-            showStatistics(c, request, response);
-        }
-        else
-        {
-            throw new AuthorizeException();
-        }
+
+        showStatistics(c, request, response);
     }
-    
+
     /**
      * show the default statistics page
      *
@@ -80,21 +64,21 @@ public class StatisticsServlet extends org.dspace.app.webui.servlet.DSpaceServle
      * @param request   current servlet request object
      * @param response  current servlet response object
      */
-    private void showStatistics(Context context, 
+    private void showStatistics(Context context,
         HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException, SQLException, AuthorizeException
     {
         StringBuffer report = new StringBuffer();
         String date = (String) request.getParameter("date");
         request.setAttribute("date", date);
-        
+
         request.setAttribute("general", Boolean.FALSE);
-        
+
         File reportDir = new File(ConfigurationManager.getProperty("report.dir"));
-        
+
         File[] reports = reportDir.listFiles();
         File reportFile = null;
-        
+
         FileInputStream fir = null;
         InputStreamReader ir = null;
         BufferedReader br = null;
@@ -257,7 +241,7 @@ public class StatisticsServlet extends org.dspace.app.webui.servlet.DSpaceServle
         }
         // set the report to be displayed
         request.setAttribute("report", report.toString());
-        
+
         JSPManager.showJSP(request, response, "statistics/report.jsp");
     }
 }
