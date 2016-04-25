@@ -10,48 +10,33 @@ package org.dspace.app.webui.jsptag;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.dspace.app.itemmarking.ItemMarkingExtractor;
-import org.dspace.app.itemmarking.ItemMarkingInfo;
 import org.dspace.app.webui.util.UIUtil;
-
 import org.dspace.browse.BrowseException;
 import org.dspace.browse.BrowseIndex;
 import org.dspace.browse.CrossLinks;
-
-import org.dspace.content.Bitstream;
-import org.dspace.content.DCDate;
-import org.dspace.content.Metadatum;
-import org.dspace.content.Item;
-import org.dspace.content.Thumbnail;
+import org.dspace.content.*;
+import org.dspace.content.authority.MetadataAuthorityManager;
 import org.dspace.content.service.ItemService;
-
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
 import org.dspace.core.Utils;
-
 import org.dspace.sort.SortOption;
 import org.dspace.storage.bitstore.BitstreamStorageManager;
-import org.dspace.utils.DSpace;
-
-import java.awt.image.BufferedImage;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-
-import java.net.URLEncoder;
-import java.sql.SQLException;
-import java.util.StringTokenizer;
 
 import javax.imageio.ImageIO;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.jstl.fmt.LocaleSupport;
 import javax.servlet.jsp.tagext.TagSupport;
-import org.dspace.content.authority.MetadataAuthorityManager;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.sql.SQLException;
+import java.util.StringTokenizer;
 
 /**
  * Tag for display a list of items
@@ -380,14 +365,31 @@ public class ItemListTag extends TagSupport
                         + "&nbsp;" //LocaleSupport.getLocalizedMessage(pageContext, message)
                         + (emph[emph.length - 2] ? "</strong>" : "") + "</th>");
             }
+            // my column header - Type
+            String id = "t" + Integer.toString(cOddOrEven.length + 1);
+            String css = "oddRow" + cOddOrEven[cOddOrEven.length - 2] + "Col";
+
+            // output the header
+            out.print("<th id=\"" + id +  "\" class=\"" + css + "\">"
+                    + LocaleSupport.getLocalizedMessage(pageContext, "metadata.dc.type")
+                    + "</th>");
 
             out.print("</tr>");
+            String locale = UIUtil.getSessionLocale((HttpServletRequest) pageContext.getRequest()).toString();
+            // item ids
+            int[] ids = new int[items.length];
+            String[] types = new String[items.length];
+            for (int i = 0; i < ids.length; i++) {
+                ids[i] = items[i].getID();
+                Metadatum[] itemType = items[i].getMetadata("dc", "type", Item.ANY, Item.ANY);
+                types[i] = (itemType.length == 0) ? "" : ua.edu.soippo.utils.Utils.getTypeLocalized(itemType[0].value, locale);
+            }
 
             // now output each item row
             for (int i = 0; i < items.length; i++)
             {
                 // now prepare the XHTML frag for this division
-            	out.print("<tr>"); 
+            	out.print("<tr>");
                 String rOddOrEven;
                 if (i == highlightRow)
                 {
@@ -579,8 +581,8 @@ public class ItemListTag extends TagSupport
                     	markClass = " "+field+"_tr";
                     }
 
-                    
-                    String id = "t" + Integer.toString(colIdx + 1);
+
+                    id = "t" + Integer.toString(colIdx + 1);
                     out.print("<td headers=\"" + id + "\" class=\""
                     	+ rOddOrEven + "Row" + cOddOrEven[colIdx] + "Col" + markClass + "\" " + extras + ">"
                         + (emph[colIdx] ? "<strong>" : "") + metadata + (emph[colIdx] ? "</strong>" : "")
@@ -590,7 +592,7 @@ public class ItemListTag extends TagSupport
                 // Add column for 'edit item' links
                 if (linkToEdit)
                 {
-                    String id = "t" + Integer.toString(cOddOrEven.length + 1);
+                    id = "t" + Integer.toString(cOddOrEven.length + 1);
 
                         out.print("<td headers=\"" + id + "\" class=\""
                             + rOddOrEven + "Row" + cOddOrEven[cOddOrEven.length - 2] + "Col\" nowrap>"
@@ -598,8 +600,14 @@ public class ItemListTag extends TagSupport
                             + "<input type=\"hidden\" name=\"handle\" value=\"" + items[i].getHandle() + "\" />"
                             + "<input type=\"submit\" value=\"Edit Item\" /></form>"
                             + "</td>");
-                    }
+                }
+                // my column element - Type
+                id = "t" + Integer.toString(cOddOrEven.length + 1);
 
+                out.print("<td headers=\"" + id + "\" class=\""
+                        + rOddOrEven + "Row" + cOddOrEven[cOddOrEven.length - 2] + "Col\" nowrap align=\"center\">"
+                        + types[i]
+                        + "</td>");
                 out.println("</tr>");
             }
 
