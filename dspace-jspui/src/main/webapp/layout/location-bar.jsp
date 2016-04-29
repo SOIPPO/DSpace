@@ -24,8 +24,52 @@
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 
+<%@ page import="org.dspace.core.I18nUtil" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Locale" %>
+<script>
+    function changeLanguage(locale){
+        var linkToPage = parent.location.origin + parent.location.pathname + parent.location.search;
+
+        if(linkToPage.search('locale=') > 0) {
+            var reg1 = /locale=[a-z]{2}/;
+            linkToPage = linkToPage.replace(reg1, "locale=" + locale);
+        } else {
+            var glue = "&";
+            if(parent.location.search.length == 0) {
+                glue = "?";
+            }
+            linkToPage = linkToPage + glue + "locale="+locale;
+        }
+        window.location.href = linkToPage;
+    }
+</script>
+
+<%
+    Locale[] supportedLocales = I18nUtil.getSupportedLocales();
+    if (supportedLocales != null && supportedLocales.length > 1)
+    {
+%>
 <ol class="breadcrumb" style = "background-color: midnightblue;">
+    <div class="pull-right">
+        <form method="get" name="repost" action="">
+            <input type ="hidden" name ="locale"/>
+        </form>
+        <%
+            for (int i = supportedLocales.length-1; i >= 0; i--)
+            {
+        %>
+        <a href="#" class ="langChangeOn"
+           onclick="changeLanguage('<%=supportedLocales[i].toString()%>');">
+            <img width="20px" height="14px" src="/flags/<%=supportedLocales[i].toString()%>.gif" alt="<%= supportedLocales[i].getDisplayLanguage(supportedLocales[i])%>"/>
+        </a>
+        <%
+            }
+        %>
+    </div>
+    <%
+        }
+    %>
 <%
     List parentTitles = (List) request.getAttribute("dspace.layout.parenttitles");
     List parentLinks = (List) request.getAttribute("dspace.layout.parentlinks");
@@ -40,7 +84,7 @@
             if (i == parentTitles.size())
             {
 %>
-<li class="active"><%= s %></li>
+<li class="active" style = "color: yellow;"><%= s %></li>
 <%
             }
             else
@@ -52,7 +96,7 @@
         else
         {
 %>
-  <li><a href="<%= request.getContextPath() %><%= u %>"><%= s %></a></li>
+  <li><a href="<%= request.getContextPath() %><%= u %>"  style = "color: yellow;"><%= s %></a></li>
 <%
         }
 }
