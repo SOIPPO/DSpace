@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿﻿<?xml version="1.0"?>
 <!DOCTYPE input-forms SYSTEM "input-forms.dtd">
 
 
@@ -28,7 +28,7 @@
  <!-- Each form set contains an ordered set of pages; each page defines    -->
  <!-- one submission metadata entry screen. Each page has an ordered list  -->
  <!-- of field definitions, Each field definition corresponds to one       -->
- <!-- metadata entry (a so-called row), which has a DC element name, a    -->
+ <!-- metatdata entry (a so-called row), which has a DC element name, a    -->
  <!-- displayed label, a text string prompt which is called a hint, and    -->
  <!-- an input-type. Each field also may hold optional elements: DC        -->
  <!-- qualifier name, a repeatable flag, and a text string whose presence  -->
@@ -262,97 +262,68 @@ it, please enter the types and the actual numbers or codes.</hint>
 
    <value-pairs value-pairs-name="common_types" dc-term="type">
      <pair>
-       <displayed-value>Animation</displayed-value>
-       <stored-value>Animation</stored-value>
+       <displayed-value>Автореферат</displayed-value>
+       <stored-value>Synopsis</stored-value>
      </pair>
      <pair>
-       <displayed-value>Article</displayed-value>
-       <stored-value>Article</stored-value>
+       <displayed-value>Диссертация</displayed-value>
+       <stored-value>Thesis</stored-value>
      </pair>
+
      <pair>
-       <displayed-value>Book</displayed-value>
-       <stored-value>Book</stored-value>
-     </pair>
-     <pair>
-       <displayed-value>Book chapter</displayed-value>
-       <stored-value>Book chapter</stored-value>
-     </pair>
-     <pair>
-       <displayed-value>Dataset</displayed-value>
-       <stored-value>Dataset</stored-value>
-     </pair>
-     <pair>
-       <displayed-value>Learning Object</displayed-value>
-       <stored-value>Learning Object</stored-value>
-     </pair>
-     <pair>
-       <displayed-value>Image</displayed-value>
-       <stored-value>Image</stored-value>
-     </pair>
-     <pair>
-       <displayed-value>Image, 3-D</displayed-value>
-       <stored-value>Image, 3-D</stored-value>
-     </pair>
-     <pair>
-       <displayed-value>Map</displayed-value>
-       <stored-value>Map</stored-value>
-     </pair>
-     <pair>
-       <displayed-value>Musical Score</displayed-value>
-       <stored-value>Musical Score</stored-value>
-     </pair>
-     <pair>
-       <displayed-value>Plan or blueprint</displayed-value>
-       <stored-value>Plan or blueprint</stored-value>
-     </pair>
-     <pair>
-       <displayed-value>Preprint</displayed-value>
-       <stored-value>Preprint</stored-value>
-     </pair>
-     <pair>
-       <displayed-value>Presentation</displayed-value>
-       <stored-value>Presentation</stored-value>
-     </pair>
-     <pair>
-       <displayed-value>Recording, acoustical</displayed-value>
-       <stored-value>Recording, acoustical</stored-value>
-     </pair>
-     <pair>
-       <displayed-value>Recording, musical</displayed-value>
-       <stored-value>Recording, musical</stored-value>
-     </pair>
-     <pair>
-       <displayed-value>Recording, oral</displayed-value>
-       <stored-value>Recording, oral</stored-value>
-     </pair>
-     <pair>
-       <displayed-value>Software</displayed-value>
-       <stored-value>Software</stored-value>
-     </pair>
-     <pair>
-       <displayed-value>Technical Report</displayed-value>
+       <displayed-value>Отчет о научно-исследовательской работе</displayed-value>
        <stored-value>Technical Report</stored-value>
      </pair>
      <pair>
-       <displayed-value>Thesis</displayed-value>
-       <stored-value>Thesis</stored-value>
+       <displayed-value>Магистерская работа</displayed-value>
+       <stored-value>Masters thesis</stored-value>
      </pair>
+
      <pair>
-       <displayed-value>Video</displayed-value>
-       <stored-value>Video</stored-value>
+       <displayed-value>Монография</displayed-value>
+       <stored-value>Monograph</stored-value>
      </pair>
+
      <pair>
-       <displayed-value>Working Paper</displayed-value>
+       <displayed-value>Методические пособия и рекомендации</displayed-value>
        <stored-value>Working Paper</stored-value>
      </pair>
+
      <pair>
-       <displayed-value>Other</displayed-value>
-       <stored-value>Other</stored-value>
+       <displayed-value>Презентация</displayed-value>
+       <stored-value>Presentation</stored-value>
      </pair>
      <pair>
-       <displayed-value>Abstracts</displayed-value>
+       <displayed-value>Программы дисциплин</displayed-value>
+       <stored-value>Software</stored-value>
+     </pair>
+
+     <pair>
+       <displayed-value>Статья</displayed-value>
+       <stored-value>Article</stored-value>
+     </pair>
+
+     <pair>
+       <displayed-value>Справочные материалы</displayed-value>
+       <stored-value>info-materials</stored-value>
+     </pair>
+
+     <pair>
+       <displayed-value>Матеріали конференцій, семінарів та інших заходів</displayed-value>
+       <stored-value>conferences-materials</stored-value>
+     </pair>
+
+     <pair>
+       <displayed-value>Учебники, научные пособия и практикумы</displayed-value>
+       <stored-value>books</stored-value>
+     </pair>
+
+     <pair>
+       <displayed-value>Тезисы</displayed-value>
        <stored-value>abstracts</stored-value>
      </pair>
+
+
    </value-pairs>
 
    <!-- default language order: (from dspace 1.2.1)
